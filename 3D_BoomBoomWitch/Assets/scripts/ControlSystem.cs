@@ -19,7 +19,7 @@ public class ControlSystem : MonoBehaviour
     [Header("彈珠預製物")]
     public GameObject goMarbles;
     [Header("發射速度"), Range(0, 5000)]
-    public float speedShoot = 750;
+    public float speedShoot = 5000;
     [Header("射線要碰撞的圍牆")]
     public LayerMask layerToHit;
     [Header("測試滑鼠位置")]
@@ -28,6 +28,8 @@ public class ControlSystem : MonoBehaviour
     public List<GameObject> listMarbles = new List<GameObject>();
     [Header("發射間隔"), Range(0, 5)]
     public float fireInterval = 0.5f;
+    [Header("發射音效")]
+    public AudioClip soundShoot;
 
     /// <summary>
     /// 所有彈珠數量              p28.08
@@ -36,7 +38,7 @@ public class ControlSystem : MonoBehaviour
     /// <summary>
     /// 可以發射的最大彈珠數量
     /// </summary>
-    public static int maxMarbles = 2 ;
+    public static int maxMarbles = 5 ;
     /// <summary>
     /// 每次發射出去的彈珠數量              p.29.08
     /// </summary>
@@ -50,6 +52,9 @@ public class ControlSystem : MonoBehaviour
     /// </summary>
     public bool canShoot = true ;
 
+    [SerializeField, Header("動畫控制器")]
+    private Animator ani;
+
     /// <summary>
     /// 彈珠數量
     /// </summary>
@@ -58,9 +63,17 @@ public class ControlSystem : MonoBehaviour
     #endregion
 
     #region 事件
+    private void Awake()
+    {
+        instance = this;
+        textMarbleCount = GameObject.Find("彈珠數量").GetComponent<Text>();
+    }
+
     private void Start()
     {
-        for (int i = 0; i < maxMarbles; i++) SpawnMarble();
+        for (int i = 0; i < 50; i++) SpawnMarble();
+
+        UpdateUIMarbleCount();
     }
 
     private void Update()
@@ -116,6 +129,11 @@ public class ControlSystem : MonoBehaviour
 
                 // 角色 的 Z 軸 = 測試物件的座標 - 角色的座標 (向量)
                 transform.forward = traTestMousePosition.position - transform.position;
+
+                /*Vector3 angle = transform.eulerAngles;              // NEW
+                angle.x = 0;
+                angle.z = 0;
+                transform.eulerAngles = angle;*/
             }
         }
         else if (Input.GetKeyUp(KeyCode.Mouse0))
@@ -125,7 +143,6 @@ public class ControlSystem : MonoBehaviour
         }
 
     }
-
     /// <summary>
     /// 發射彈珠
     /// </summary>
@@ -136,13 +153,15 @@ public class ControlSystem : MonoBehaviour
 
         for (int i = 0; i < maxMarbles; i++)            // p.29.05
         {
+            ani.SetTrigger("觸發攻擊");
             shootMarbles++;                             // p.29.08
             GameObject temp = listMarbles[i];           //Instantiate(goMarbles, traSpawnPoint.position, traSpawnPoint.rotation);
             temp.transform.position = traSpawnPoint.position;
             temp.transform.rotation = traSpawnPoint.rotation;
             temp.GetComponent<Rigidbody>().velocity = Vector3.zero;
             temp.GetComponent<Rigidbody>().AddForce(traSpawnPoint.forward * speedShoot);    // 發射 彈珠
-            //SoundManager.instance.PlaySoundRandomVolue(soundShoot, 0.8f, 1.2f);
+            SoundManager.instance.PlaySoundRandomVolue(soundShoot, 0.3f, 0.8f);
+            //temp.GetComponent<Marble>().SpeedfastCountDown();                               // NEW   避免停留太久直接加速
             temp.GetComponent<Marble>().FlyToBottomCountDown();                             // NEW   避免停留太久進入倒數飛回底部回收區
             UpdateUIMarbleCount();                                                          // NEW
 

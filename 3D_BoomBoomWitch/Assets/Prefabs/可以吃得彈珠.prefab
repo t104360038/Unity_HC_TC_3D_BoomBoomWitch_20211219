@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 3961743055567933226}
   - component: {fileID: 8752320450410992860}
   - component: {fileID: -1885238423810119334}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: "\u53EF\u4EE5\u5403\u5F97\u5F48\u73E0"
-  m_TagString: Untagged
+  m_TagString: "\u68CB\u76E4\u4E0A\u7684\u7269\u4EF6"
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,5 +111,9 @@ MonoBehaviour:
   moveDistance: 2
   moveUnderLine: -2
   nameMarble: "\u5F48\u73E0"
-  hp: 1
+  hpBase: 0
+  hpIncrease: 0
+  damage: 0
   hasUI: 0
+  isMarble: 1
+  hpCurrent: 0
