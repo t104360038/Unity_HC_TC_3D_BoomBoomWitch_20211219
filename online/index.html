@@ -7,12 +7,12 @@
   </head>
   <body style="text-align: center">
     <canvas id="unity-canvas" width=650 height=1080 style="width: 650px; height: 1080px; background: #231F20"></canvas>
-    <script src="Build/cat.loader.js"></script>
+    <script src="Build/online.loader.js"></script>
     <script>
       createUnityInstance(document.querySelector("#unity-canvas"), {
-        dataUrl: "Build/cat.data.gz",
-        frameworkUrl: "Build/cat.framework.js.gz",
-        codeUrl: "Build/cat.wasm.gz",
+        dataUrl: "Build/online.data.gz",
+        frameworkUrl: "Build/online.framework.js.gz",
+        codeUrl: "Build/online.wasm.gz",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "Poming",
         productName: "BoomBoomCat",
